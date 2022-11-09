@@ -1,0 +1,77 @@
+<ul class="alert alert-danger" *ngIf="errores.length>0">
+    <li *ngFor="let error of errores">{{error}}</li>
+</ul>
+
+<div class="card bg-dark text-white">
+    <div class="card-header">{{titulo}}</div>
+    <div class="card-body">
+        <form #clienteForm="ngForm">
+            <div class="form-group">
+                <label for="" class="col-form-label col-sm-2">Nombre</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" [(ngModel)]="cliente.nombre" name="nombre"
+                        #nombre="ngModel">
+                    <!-- required minlength="3" -->
+                    <div class="alert alert-danger" *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
+                        <div *ngIf="nombre.errors?.['required']">
+                            Nombre es requerido
+                        </div>
+                        <div *ngIf="nombre.errors?.['minlength']">
+                            Nombre debe tener al menos 3 caracteres
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="" class="col-form-label col-sm-2">Apellido</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" [(ngModel)]="cliente.apellido" name="apellido"
+                        #apellido="ngModel">
+                    <!-- required -->
+                    <div class="alert alert-danger" *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)">
+                        <div *ngIf="apellido.errors?.['required']">
+                            Apellido es requerido
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="" class="col-form-label col-sm-2">Email</label>
+                <div class="col-sm-6">
+                    <input type="email" class="form-control" [(ngModel)]="cliente.email" name="email" #email="ngModel">
+                    <!-- required email -->
+                </div>
+                <div class="alert alert-danger" *ngIf="email.invalid && (email.dirty || email.touched)">
+                    <div *ngIf="email.errors?.['required']">
+                        Email es requerido
+                    </div>
+                    <div *ngIf="email.errors?.['email']">
+                        El email debe tener formato valido
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="createAt" class="col-form-label col-sm-2">createAt</label>
+                <div class="col-sm-6">
+                    <input class="form-control" matInput [matDatepicker]="miDatapicker" name="createAt" [(ngModel)]="cliente.createAt" style="display: inline; width: 280px;">
+                    <mat-datepicker-toggle matSuffix [for]="miDatapicker"></mat-datepicker-toggle>
+                    <mat-datepicker #miDatapicker></mat-datepicker>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <button class="btn btn-primary mt-3" (click)="create()" *ngIf="!cliente.id else updates"
+                        [disabled]="!clienteForm.form.valid">Crear</button>
+                    <ng-template #updates>
+                        <button class="btn btn-primary mt-3" (click)="update()"
+                            [disabled]="!clienteForm.form.valid">Actualizar</button>
+                    </ng-template>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
